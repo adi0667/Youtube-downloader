@@ -1,23 +1,20 @@
 from flask import Flask, render_template, request, flash, send_file, session, redirect, url_for
 from ssl_script import download_video
 import os
-import tempfile
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
+DOWNLOADS_DIR = 'downloads'
+os.makedirs(DOWNLOADS_DIR, exist_ok=True)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         url = request.form.get('url')
-        tmpdirname = tempfile.mkdtemp()
-        download_video(url, save_path=tmpdirname)
-        # Find the first video file in the temp directory
+        file_path = download_video(url, save_path=DOWNLOADS_DIR)
         video_file = None
-        for fname in os.listdir(tmpdirname):
-            if fname.lower().endswith(('.mp4', '.webm', '.mkv', '.mov', '.avi', '.flv')):
-                video_file = os.path.join(tmpdirname, fname)
-                break
+        if file_path and os.path.exists(file_path):
+            video_file = file_path
         if video_file and os.path.exists(video_file):
             session['temp_video_path'] = video_file
             session['temp_video_name'] = os.path.basename(video_file)
@@ -57,5 +54,4 @@ def download_video_route():
         flash('Video not found.', 'danger')
         return redirect(url_for('index'))
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Note: Do NOT include app.run(debug=True) for production/cloud deployment

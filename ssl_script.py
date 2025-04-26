@@ -1,10 +1,11 @@
 import yt_dlp
 import os
 
-def download_video(url, save_path='.'):
+def download_video(url, save_path='.'): 
     try:
         ydl_opts = {
             'outtmpl': f'{save_path}/%(title)s.%(ext)s',
+            'cookies': 'cookies.txt',  # Use cookies for authentication
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             print(f"Downloading video from: {url}")
