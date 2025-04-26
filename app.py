@@ -11,7 +11,14 @@ os.makedirs(DOWNLOADS_DIR, exist_ok=True)
 def index():
     if request.method == 'POST':
         url = request.form.get('url')
-        file_path = download_video(url, save_path=DOWNLOADS_DIR)
+        try:
+            file_path = download_video(url, save_path=DOWNLOADS_DIR)
+        except Exception as e:
+            file_path = None
+            error_message = str(e)
+            print(f"Download error: {error_message}")
+            flash(f'Download failed: {error_message}', 'danger')
+            return render_template('index.html')
         video_file = None
         if file_path and os.path.exists(file_path):
             video_file = file_path
@@ -21,7 +28,7 @@ def index():
             flash('Download completed!', 'success')
             return redirect(url_for('preview'))
         else:
-            flash('Download failed. Please check the URL and try again.', 'danger')
+            flash('Download failed. Check logs for details.', 'danger')
     return render_template('index.html')
 
 @app.route('/preview')
