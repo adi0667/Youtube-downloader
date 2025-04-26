@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Video Preview</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 600px; margin: auto; }
+        .flash { padding: 10px; margin-bottom: 10px; border-radius: 4px; background: #d4edda; color: #155724; }
+        .video-preview { margin-top: 30px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="flash">Download completed!</div>
+    <div class="video-preview">
+        <h3>Video Preview</h3>
+        <video width="100%" height="340" controls>
+            <source src="{{ url_for('temp_video') }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <br><br>
+        <a href="{{ url_for('download_video_route') }}" download>
+            <button>Download Video</button>
+        </a>
+    </div>
+    <br>
+    <a href="/">Download another video</a>
+</div>
+</body>
+</html>
