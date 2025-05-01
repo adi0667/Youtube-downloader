@@ -62,3 +62,6 @@ def download_video_route():
         return redirect(url_for('index'))
 
 # Note: Do NOT include app.run(debug=True) for production/cloud deployment
+print("Starting Flask app...")
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5001)

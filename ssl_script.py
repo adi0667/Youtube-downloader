@@ -3,9 +3,11 @@ import os
 
 def download_video(url, save_path='.'): 
     try:
+        cookies_path = os.path.join(os.path.dirname(__file__), 'cookies.txt')
+        print("cookies.txt exists:", os.path.exists(cookies_path), "at", cookies_path)
         ydl_opts = {
             'outtmpl': f'{save_path}/%(title)s.%(ext)s',
-            'cookies': 'cookies.txt',  # Use cookies for authentication
+            'cookies': cookies_path,  # Use absolute path for cookies
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             print(f"Downloading video from: {url}")
